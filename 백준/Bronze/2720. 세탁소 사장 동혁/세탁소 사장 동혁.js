@@ -3,18 +3,20 @@ const filePath =
   process.platform === "linux" ? "/dev/stdin" : __dirname + "/input.txt";
 const [T, ...input] = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const coins = [25, 10, 5, 1];
-let results = [];
+let result = "";
 
 for (let i = 0; i < T; i++) {
-  let change = Number(input[i]);
-  const counts = coins.map((coin) => {
-    const count = Math.floor(change / coin);
-    change %= coin;
-    return count;
-  });
+  let change = Number(input[i]); // 센트 단위로 입력받기
 
-  results.push(counts.join(" "));
+  let quarter = Math.floor(change / 25); // 25센트
+  change %= 25;
+  let dime = Math.floor(change / 10); // 10센트
+  change %= 10;
+  let nickel = Math.floor(change / 5); // 5센트
+  change %= 5;
+  let penny = change; // 남은 센트는 전부 페니
+
+  result += `${quarter} ${dime} ${nickel} ${penny}\n`;
 }
 
-console.log(results.join("\n"));
+console.log(result.trim()); // 마지막 줄바꿈 제거
